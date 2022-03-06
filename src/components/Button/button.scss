@@ -1,0 +1,85 @@
+$primary: red;
+$secondary: black;
+
+.button {
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 10px;
+
+  &.link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 34px;
+
+    &.small {
+      width: 60px;
+      font-size: 15px;
+      height: 30px;
+    }
+
+    &.medium {
+      width: 76px;
+      height: 34px;
+    }
+  }
+
+  &.primary {
+    background-color: $primary;
+    border: 2px solid $primary;
+    color: white;
+
+    &.outline {
+      background-color: transparent;
+      border: 2px solid $primary;
+      color: $primary;
+
+      &:hover {
+        background-color: $primary;
+        border: 2px solid $primary;
+        color: white;
+      }
+    }
+
+    &:hover {
+      background-color: transparent;
+      border: 2px solid $primary;
+      color: $primary;
+    }
+  }
+
+  &.secondary {
+    background-color: $secondary;
+    border: 2px solid $secondary;
+    color: white;
+
+    &.outline {
+      background-color: transparent;
+      border: 2px solid $secondary;
+      color: $secondary;
+
+      &:hover {
+        background-color: $secondary;
+        border: 2px solid $secondary;
+        color: white;
+      }
+    }
+
+    &:hover {
+      background-color: transparent;
+      border: 2px solid $secondary;
+      color: $secondary;
+    }
+  }
+
+  &.small {
+    width: 62px;
+    height: 32px;
+    font-size: 15px;
+  }
+
+  &.medium {
+    width: 80px;
+    height: 38px;
+  }
+}
