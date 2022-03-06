@@ -15,6 +15,7 @@
   "plugins": ["react"],
   "rules": {
     "space-before-function-paren": ["error", "never"],
-    "multiline-ternary": ["error", "never"]
+    "multiline-ternary": ["error", "never"],
+    "no-unused-vars": "warn"
   }
 }
