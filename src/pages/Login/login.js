@@ -22,7 +22,7 @@ export default function Login() {
         </div>
       </div>
       <div className="login__right">
-        <Form />
+        <Form/>
       </div>
     </div>
   )
