@@ -15,6 +15,5 @@ const firebaseConfig = {
 // eslint-disable-next-line no-unused-vars
 const firebaseApp = initializeApp(firebaseConfig)
 const db = getFirestore()
-const auth = getAuth()
 
-export { db, auth }
+export { db }
