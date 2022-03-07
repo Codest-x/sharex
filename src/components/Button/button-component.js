@@ -3,12 +3,21 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import './button.scss'
 
-export default function Button({ children, type, path, size, style = '' }) {
+export default function Button({
+  children,
+  type,
+  path,
+  size,
+  style = '',
+  onClick,
+  width
+}) {
   return (
     <>
       {path ? (
         <Link
           to={path}
+          style={width ? { width: width } : { width: '80px' }}
           className={`button ${type || 'primary'} ${path ? 'link' : ''} ${
             size || 'medium'
           } ${style} `}
@@ -17,6 +26,8 @@ export default function Button({ children, type, path, size, style = '' }) {
         </Link>
       ) : (
         <button
+          onClick={onClick}
+          style={width ? { width: width } : { width: '80px' }}
           className={`button ${type} ${path ? 'link' : ''} ${
             size || 'medium'
           } ${style} `}
@@ -33,5 +44,7 @@ Button.propTypes = {
   type: PropTypes.string,
   path: PropTypes.string,
   size: PropTypes.string,
-  style: PropTypes.string
+  style: PropTypes.string,
+  onClick: PropTypes.func,
+  width: PropTypes.string
 }
