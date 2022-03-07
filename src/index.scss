@@ -5,7 +5,7 @@
 html {
   line-height: 1.15; /* 1 */
   -webkit-text-size-adjust: 100%; /* 2 */
-  font-family: Helvetica Now Display DW,sans-serif;
+  font-family: Helvetica Now Display DW, sans-serif;
 }
 
 .app {
@@ -16,7 +16,8 @@ html {
 
 .app__body {
   display: flex;
-  width: 1128px;
+  max-width: 1200px;
+  margin: 35px 20px 0px 20px;
 }
 
 /* Sections
