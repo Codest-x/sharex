@@ -12,7 +12,7 @@ export default function InputOption({ Icon, title, color }) {
 }
 
 InputOption.propTypes = {
-  Icon: PropTypes.element,
+  Icon: PropTypes.object,
   title: PropTypes.string,
   color: PropTypes.string
 }
