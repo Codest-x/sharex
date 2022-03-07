@@ -40,7 +40,7 @@ export default function Button({
 }
 
 Button.propTypes = {
-  children: PropTypes.element,
+  children: PropTypes.string,
   type: PropTypes.string,
   path: PropTypes.string,
   size: PropTypes.string,
