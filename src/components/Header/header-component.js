@@ -6,12 +6,11 @@ import GroupIcon from '@mui/icons-material/Group'
 import HeaderOption from '../HeaderOption/header-option'
 import Button from '../Button/button-component'
 import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { logout, selectUser } from '../../features/userSlice'
+import { useDispatch } from 'react-redux'
+import { logout } from '../../features/userSlice'
 import { signOut, getAuth } from 'firebase/auth'
 
 export default function Header() {
-  const { user } = useSelector(selectUser)
   const dispatch = useDispatch()
   const auth = getAuth()
 
