@@ -6,16 +6,12 @@ import GroupIcon from '@mui/icons-material/Group'
 import HeaderOption from '../HeaderOption/header-option'
 import Button from '../Button/button-component'
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { logout } from '../../features/userSlice'
 import { signOut, getAuth } from 'firebase/auth'
 
 export default function Header() {
-  const dispatch = useDispatch()
   const auth = getAuth()
 
   const LogoutApp = () => {
-    dispatch(logout())
     signOut(auth)
   }
   return (

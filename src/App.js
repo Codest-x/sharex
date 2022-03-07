@@ -34,8 +34,14 @@ function App() {
     <div className="app">
       {location.pathname != '/login' ? <Header /> : null}
       <Routes>
-        <Route path="/login" element={user.user ? <Navigate to="/" /> : <Login />} />
-        <Route path="/" element={!user.user ? <Navigate to="/login" /> : <Home />} />
+        <Route
+          path="/login"
+          element={user.user ? <Navigate to="/" /> : <Login />}
+        />
+        <Route
+          path="/"
+          element={!user.user ? <Navigate to="/login" /> : <Home />}
+        />
       </Routes>
     </div>
   )
