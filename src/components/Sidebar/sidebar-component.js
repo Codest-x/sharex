@@ -1,8 +1,11 @@
 import { Avatar } from '@mui/material'
 import React from 'react'
 import './sidebar.scss'
+import { useSelector } from 'react-redux'
+import { selectUser } from '../../features/userSlice'
 
 export default function Sidebar() {
+  const { user } = useSelector(selectUser)
   const recentItem = (topic) => (
     <div className="sidebar__recentItem">
       <span className="sidebar__hash">#</span>
@@ -16,9 +19,11 @@ export default function Sidebar() {
           src="https://tecnovortex.com/wp-content/uploads/2019/04/wallpaper-engine.jpg"
           alt="banner-profile"
         />
-        <Avatar src="" className="sidebar__avatar" />
-        <h2>Esteban Estrada</h2>
-        <h4>davinsontc@outlook.com</h4>
+        <Avatar src={user.photoUrl} className="sidebar__avatar">
+          {user.displayName[0]}
+        </Avatar>
+        <h2>{user.displayName}</h2>
+        <h4>{user.email}</h4>
       </div>
       <div className="sidebar__stats">
         <div className="sidebar__stat">

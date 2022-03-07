@@ -6,12 +6,25 @@ import GroupIcon from '@mui/icons-material/Group'
 import HeaderOption from '../HeaderOption/header-option'
 import Button from '../Button/button-component'
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { logout, selectUser } from '../../features/userSlice'
+import { signOut, getAuth } from 'firebase/auth'
 
 export default function Header() {
+  const { user } = useSelector(selectUser)
+  const dispatch = useDispatch()
+  const auth = getAuth()
+
+  const LogoutApp = () => {
+    dispatch(logout())
+    signOut(auth)
+  }
   return (
     <div className="header">
       <div className="header__left">
-        <Link to="/" className="header__logo">ShareX</Link>
+        <Link to="/" className="header__logo">
+          ShareX
+        </Link>
         {/* <img
           src="https://cdn-icons-png.flaticon.com/512/2065/2065064.png"
           alt="logo-icon"
@@ -25,13 +38,9 @@ export default function Header() {
       <div className="header__right">
         <HeaderOption title="Inicio" path="/" Icon={HomeIcon} />
         <HeaderOption title="Explorar" path="/explore" Icon={GroupIcon} />
-        <HeaderOption
-          title="Me"
-          avatar="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg"
-          path="/profile"
-        />
-        <Button type="primary" path="/login" size="medium">
-          Login
+        <HeaderOption title="Me" avatar />
+        <Button type="primary" onClick={LogoutApp} size="medium">
+          Logout
         </Button>
       </div>
     </div>

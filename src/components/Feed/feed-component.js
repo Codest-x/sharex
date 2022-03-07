@@ -7,7 +7,9 @@ import ArticleIcon from '@mui/icons-material/Article'
 import './feed.scss'
 import InputOption from '../InputOption/input-option'
 import Post from '../Post/post-component'
+import FlipMove from 'react-flip-move'
 import { db } from '../../firebase/firebase'
+import { useSelector } from 'react-redux'
 import {
   collection,
   onSnapshot,
@@ -16,10 +18,12 @@ import {
   orderBy,
   query
 } from 'firebase/firestore'
+import { selectUser } from '../../features/userSlice'
 
 export default function Feed() {
   const [posts, setPosts] = useState([])
   const [input, setInput] = useState('')
+  const user = useSelector(selectUser)
 
   const sendPost = (e) => {
     e.preventDefault()
@@ -27,11 +31,10 @@ export default function Feed() {
     const addData = async () => {
       try {
         await addDoc(collection(db, 'posts'), {
-          name: 'Esteban Estrada',
+          name: user.user.displayName,
           message: input,
           description: 'this is a test',
-          photoUrl:
-            'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50.jpg',
+          photoUrl: user.user.photoUrl || '',
           timestamp: serverTimestamp()
         })
         setInput('')
@@ -81,15 +84,17 @@ export default function Feed() {
           {/* <InputOption title="Evento" Icon={EventIcon} color="green" /> */}
         </div>
       </div>
-      {posts.map(({ id, data: { name, description, message, photoUrl } }) => (
-        <Post
-          key={id}
-          name={name}
-          description={description}
-          photoUrl={photoUrl}
-          message={message}
-        />
-      ))}
+      <FlipMove>
+        {posts.map(({ id, data: { name, description, message, photoUrl } }) => (
+          <Post
+            key={id}
+            name={name}
+            description={description}
+            photoUrl={photoUrl}
+            message={message}
+          />
+        ))}
+      </FlipMove>
     </div>
   )
 }
