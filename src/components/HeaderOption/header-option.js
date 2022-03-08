@@ -22,7 +22,13 @@ export default function HeaderOption({ Icon, title, avatar, path, onClick }) {
           }
         >
           {avatar && (
-            <Avatar className="headerOption__icon" src={user?.photoUrl}>
+            <Avatar
+              className="headerOption__icon"
+              src={user?.photoUrl}
+              style={
+                currentPath.pathname === path ? { backgroundColor: 'red' } : { backgroundColor: '' }
+              }
+            >
               {user?.displayName[0]}
             </Avatar>
           )}
