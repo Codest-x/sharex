@@ -24,7 +24,7 @@ const Post = forwardRef(({ name, description, message, photoUrl }, ref) => {
       </div>
 
       <div className="post__buttons">
-        <InputOption Icon={ThumbUpIcon} title="Me Gusta" color="gray" />
+        <InputOption Icon={ThumbUpIcon} title="Like" color="gray" />
         <InputOption Icon={CommentIcon} title="Comentar" />
         <InputOption Icon={ShareIcon} title="Compartir" />
         <InputOption Icon={SendIcon} title="Enviar" />
