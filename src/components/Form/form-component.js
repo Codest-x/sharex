@@ -2,22 +2,11 @@
 import React, { useState } from 'react'
 import './form.scss'
 import Button from '../../components/Button/button-component'
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  updateProfile,
-  getAuth,
-  signInWithPopup,
-  GoogleAuthProvider
-} from 'firebase/auth'
 import { useDispatch } from 'react-redux'
-import { login } from '../../features/userSlice'
-import { provider } from '../../firebase/firebase'
 import GoogleIcon from '@mui/icons-material/Google'
-import Swal from 'sweetalert2'
+import { Login, Register, GoogleLogin } from '../../firebase/actions'
 
 export default function Form() {
-  const auth = getAuth()
   const [loginState, setLoginState] = useState({
     current: 'login',
     title: 'Registrarme'
@@ -37,148 +26,6 @@ export default function Form() {
     e.target.innerHTML === 'Iniciar Sesion'
       ? setLoginState({ current: 'login', title: 'Registarme' })
       : setLoginState({ current: 'register', title: 'Iniciar Sesion' })
-  }
-
-  const Register = (e) => {
-    e.preventDefault()
-    if (!password || !confirmpassword) {
-      Swal.fire({
-        position: 'top',
-        icon: 'error',
-        title: 'Los campos de contraseña deben estar llenos',
-        showConfirmButton: false,
-        timer: 2000
-      })
-    } else {
-      if (password !== confirmpassword) {
-        Swal.fire({
-          position: 'top',
-          icon: 'error',
-          title: 'Las contraseñas deben coincidir',
-          showConfirmButton: false,
-          timer: 2000
-        })
-      } else {
-        createUserWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            updateProfile(userCredential.user, {
-              displayName:
-                fullname ||
-                'User-' +
-                  userCredential.user.uid.slice(0, 3) +
-                  userCredential.user.uid.slice(-3),
-              photoUrl: ''
-            })
-              .then(() => {
-                dispatch(
-                  login({
-                    email: userCredential.user.email,
-                    uid: userCredential.user.uid,
-                    displayName:
-                      fullname ||
-                      'User-' +
-                        userCredential.user.uid.slice(0, 3) +
-                        userCredential.user.uid.slice(-3),
-                    photoUrl: ''
-                  })
-                )
-              })
-              .catch((error) => {
-                Swal.fire({
-                  position: 'top',
-                  icon: 'error',
-                  title: error.message,
-                  showConfirmButton: false,
-                  timer: 1500
-                })
-              })
-          })
-          .catch((error) => {
-            const errorCode = error.code
-            let title
-            switch (errorCode) {
-              case 'auth/invalid-email':
-                title = 'Invalid Email'
-                break
-              case 'auth/weak-password':
-                title = 'Minimun password character 6'
-                break
-              case 'auth/email-already-in-use':
-                title = 'Email already in use'
-                break
-              default:
-                title = 'Hubo un error'
-                break
-            }
-            Swal.fire({
-              position: 'top',
-              icon: 'error',
-              title: title,
-              showConfirmButton: false,
-              timer: 2000
-            })
-          })
-      }
-    }
-  }
-
-  const Login = (e) => {
-    e.preventDefault()
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        dispatch(
-          login({
-            email: userCredential.user.email,
-            uid: userCredential.user.uid,
-            displayName: userCredential.user.displayName,
-            photoUrl: userCredential.user.photoURL
-          })
-        )
-      })
-      .catch((error) => {
-        const errorCode = error.code
-        let title
-        switch (errorCode) {
-          case 'auth/wrong-password':
-            title = 'Contraseña Incorrecta'
-            break
-          case 'auth/invalid-email':
-            title = 'Invalid Email'
-            break
-          default:
-            title = 'Hubo un error'
-            break
-        }
-        Swal.fire({
-          position: 'top',
-          icon: 'error',
-          title: title,
-          showConfirmButton: false,
-          timer: 1500
-        })
-      })
-  }
-
-  const GoogleLogin = () => {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        /* const credential = GoogleAuthProvider.credentialFromResult(result) */
-        const user = result.user
-
-        dispatch(
-          login({
-            email: user.email,
-            uid: user.uid,
-            displayName: user.displayName,
-            photoUrl: user.photoURL
-          })
-        )
-      })
-      .catch((error) => {
-        /* const credential = GoogleAuthProvider.credentialFromError(error) */
-        console.log(error)
-        // ...
-      })
   }
 
   return (
@@ -224,7 +71,15 @@ export default function Form() {
           value={confirmpassword}
           onChange={(e) => setconfirmPassword(e.target.value)}
         />
-        <Button type="primary" size="medium" width="150px" onClick={Register}>
+        <Button
+          type="primary"
+          size="medium"
+          width="150px"
+          onClick={(e) => {
+            e.preventDefault()
+            Register(fullname, email, password, confirmpassword, dispatch)
+          }}
+        >
           Registrarme
         </Button>
       </div>
@@ -257,12 +112,20 @@ export default function Form() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <div className="login__buttons">
-          <Button type="primary" size="medium" width="150px" onClick={Login}>
+          <Button
+            type="primary"
+            size="medium"
+            width="150px"
+            onClick={(e) => {
+              e.preventDefault()
+              Login(email, password, dispatch)
+            }}
+          >
             Iniciar Sesion
           </Button>
           <span>
             Usa Google
-            <GoogleIcon onClick={GoogleLogin} />
+            <GoogleIcon onClick={() => GoogleLogin(dispatch)} />
           </span>
         </div>
       </div>
