@@ -33,7 +33,7 @@ export default function Feed() {
         await addDoc(collection(db, 'posts'), {
           name: user.user.displayName,
           message: input,
-          description: 'this is a test',
+          description: user.user.email,
           photoUrl: user.user.photoUrl || '',
           timestamp: serverTimestamp()
         })

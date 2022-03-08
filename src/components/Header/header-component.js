@@ -7,11 +7,15 @@ import HeaderOption from '../HeaderOption/header-option'
 import Button from '../Button/button-component'
 import { Link } from 'react-router-dom'
 import { signOut, getAuth } from 'firebase/auth'
+import { useDispatch } from 'react-redux'
+import { logout } from '../../features/userSlice'
 
 export default function Header() {
   const auth = getAuth()
+  const dispatch = useDispatch()
 
   const LogoutApp = () => {
+    dispatch(logout())
     signOut(auth)
   }
   return (
@@ -33,7 +37,7 @@ export default function Header() {
       <div className="header__right">
         <HeaderOption title="Inicio" path="/" Icon={HomeIcon} />
         <HeaderOption title="Explorar" path="/explore" Icon={GroupIcon} />
-        <HeaderOption title="Me" avatar />
+        <HeaderOption title="Me" path="/profile" avatar />
         <Button type="primary" onClick={LogoutApp} size="medium">
           Logout
         </Button>
