@@ -4,6 +4,7 @@ import CreateIcon from '@mui/icons-material/Create'
 import ImageIcon from '@mui/icons-material/Image'
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary'
 import ArticleIcon from '@mui/icons-material/Article'
+import SendIcon from '@mui/icons-material/Send'
 import './feed.scss'
 import InputOption from '../InputOption/input-option'
 import Post from '../Post/post-component'
@@ -27,7 +28,6 @@ export default function Feed() {
 
   const sendPost = (e) => {
     e.preventDefault()
-
     const addData = async () => {
       try {
         await addDoc(collection(db, 'posts'), {
@@ -78,7 +78,8 @@ export default function Feed() {
           </form>
         </div>
         <div className="feed__inputOptions">
-          <InputOption title="Foto" Icon={ImageIcon} color="red" />
+          <InputOption onClick={sendPost} title="Enviar" Icon={SendIcon} color="red" />
+          <InputOption title="Foto" Icon={ImageIcon} color="#0074FF" />
           <InputOption title="Video" Icon={VideoLibraryIcon} color="orange" />
           <InputOption title="Articulo" Icon={ArticleIcon} color="green" />
           {/* <InputOption title="Evento" Icon={EventIcon} color="green" /> */}
