@@ -1,9 +1,21 @@
+/* eslint-disable multiline-ternary */
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import { login } from '../../features/userSlice'
 import Swal from 'sweetalert2'
 
 const Login = (email, password, dispatch) => {
   const auth = getAuth()
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       dispatch(
@@ -19,22 +31,22 @@ const Login = (email, password, dispatch) => {
       const errorCode = error.code
       let title
       switch (errorCode) {
+        case 'auth/user-not-found':
+          title = 'No existe el usuario'
+          break
         case 'auth/wrong-password':
           title = 'Contraseña Incorrecta'
           break
         case 'auth/invalid-email':
-          title = 'Invalid Email'
+          title = 'Correo Incorrecto'
           break
         default:
           title = 'Hubo un error'
           break
       }
-      Swal.fire({
-        position: 'top',
+      Toast.fire({
         icon: 'error',
-        title: title,
-        showConfirmButton: false,
-        timer: 1500
+        title: title
       })
     })
 }
