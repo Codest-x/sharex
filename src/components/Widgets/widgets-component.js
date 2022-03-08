@@ -21,7 +21,7 @@ export default function Widgets() {
         <h2>Bookex News</h2>
         <InfoIcon />
       </div>
-      {newsArticle('Papa React is back', 'News')}
+      {newsArticle('Making a social media', 'Programming')}
     </div>
   )
 }
