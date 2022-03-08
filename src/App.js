@@ -12,14 +12,15 @@ function App() {
   const dispatch = useDispatch()
   const auth = getAuth()
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
+    onAuthStateChanged(auth, (userAuth) => {
+      if (userAuth) {
         dispatch(
           login({
-            email: user.email,
-            uid: user.uid,
-            displayName: user.displayName,
-            photoUrl: user.photoURL
+            email: userAuth.email,
+            uid: userAuth.uid,
+            displayName:
+              userAuth.displayName === null ? 'User-' + userAuth.uid.slice(0, 3) + userAuth.uid.slice(-3) : userAuth.displayName,
+            photoUrl: userAuth.photoURL === null ? '' : userAuth.photoURL
           })
         )
         // ...
