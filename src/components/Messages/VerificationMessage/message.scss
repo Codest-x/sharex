@@ -1,0 +1,19 @@
+.message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px;
+  gap: 10px;
+
+  span {
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
+
+    &:hover {
+      color: gray;
+    }
+  }
+}
