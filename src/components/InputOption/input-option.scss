@@ -14,3 +14,13 @@
     margin-left: 5px;
   }
 }
+
+@media screen and (max-width: 768px) {
+  .inputOption {
+    padding: 5px;
+
+    h4 {
+      font-size: 12px;
+    }
+  }
+}

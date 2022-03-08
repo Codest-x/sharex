@@ -21,6 +21,13 @@ html {
   margin: 35px 20px 0px 20px;
 }
 
+@media screen and (max-width: 768px) {
+  .app__body {
+    width: 100vw;
+    min-width: 0;
+  }
+}
+
 /* Sections
    ========================================================================== */
 

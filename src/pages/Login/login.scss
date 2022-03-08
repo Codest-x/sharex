@@ -89,3 +89,40 @@
     border-right-color: transparent;
   }
 }
+
+@media screen and (max-width: 768px) {
+  .login__container {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100vw;
+
+    .login__left {
+      width: 100%;
+      height: 100vh;
+
+      .video__bg {
+        width: 100vw;
+      }
+
+      .form__video {
+        width: 100vw;
+      }
+
+      .text__box {
+        h1 {
+          font-size: 4rem;
+
+          &:nth-child(1) {
+            font-size: 4rem;
+          }
+        }
+      }
+    }
+    .login__right {
+      width: 100vw;
+      height: 100vh;
+    }
+  }
+}
