@@ -15,6 +15,32 @@
     align-items: center;
     padding-top: 30%;
 
+    .login__buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+
+      span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+
+        svg {
+          width: 40px;
+          height: 40px;
+          color: red;
+          transition:all 0.3s;
+
+          &:hover {
+            transform: scale(1.2)
+          }
+        }
+      }
+    }
+
     h1 {
       font-size: 2.5rem;
       margin-bottom: 10px;
