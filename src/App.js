@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable eqeqeq */
 import React, { useEffect } from 'react'
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
@@ -6,7 +7,11 @@ import { selectUser, login, logout } from './features/userSlice'
 import Header from './components/Header/header-component'
 import { Home } from './pages'
 import Login from './pages/Login/login'
-import { onAuthStateChanged, getAuth } from 'firebase/auth'
+import {
+  onAuthStateChanged,
+  getAuth
+} from 'firebase/auth'
+import Message from './components/Messages/VerificationMessage/verification-message'
 
 function App() {
   const dispatch = useDispatch()
@@ -19,8 +24,11 @@ function App() {
             email: userAuth.email,
             uid: userAuth.uid,
             displayName:
-              userAuth.displayName === null ? 'User-' + userAuth.uid.slice(0, 3) + userAuth.uid.slice(-3) : userAuth.displayName,
-            photoUrl: userAuth.photoURL === null ? '' : userAuth.photoURL
+              userAuth.displayName === null
+                ? 'User-' + userAuth.uid.slice(0, 3) + userAuth.uid.slice(-3)
+                : userAuth.displayName,
+            photoUrl: userAuth.photoURL === null ? '' : userAuth.photoURL,
+            isVerified: userAuth.emailVerified
           })
         )
         // ...
@@ -30,19 +38,19 @@ function App() {
     })
   }, [])
   const location = useLocation()
-  const user = useSelector(selectUser)
+  const { user } = useSelector(selectUser)
+
   return (
     <div className="app">
+      {location.pathname != '/login' ? (
+        user?.isVerified ? null : (
+          <Message email={user?.email} />
+        )
+      ) : null}
       {location.pathname != '/login' ? <Header /> : null}
       <Routes>
-        <Route
-          path="/login"
-          element={user.user ? <Navigate to="/" /> : <Login />}
-        />
-        <Route
-          path="/"
-          element={!user.user ? <Navigate to="/login" /> : <Home />}
-        />
+        <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
+        <Route path="/" element={!user ? <Navigate to="/login" /> : <Home />} />
       </Routes>
     </div>
   )
