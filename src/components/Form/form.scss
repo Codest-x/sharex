@@ -32,10 +32,10 @@
           width: 40px;
           height: 40px;
           color: red;
-          transition:all 0.3s;
+          transition: all 0.3s;
 
           &:hover {
-            transform: scale(1.2)
+            transform: scale(1.2);
           }
         }
       }
