@@ -1,7 +1,8 @@
 import {
   getAuth,
   createUserWithEmailAndPassword,
-  updateProfile
+  updateProfile,
+  sendEmailVerification
 } from 'firebase/auth'
 import Swal from 'sweetalert2'
 import { login } from '../../features/userSlice'
@@ -44,18 +45,20 @@ const Register = (fullname, email, password, confirmpassword, dispatch) => {
               photoUrl: ''
             })
               .then(() => {
-                dispatch(
-                  login({
-                    email: userCredential.user.email,
-                    uid: userCredential.user.uid,
-                    displayName:
-                      fullname ||
-                      'User-' +
-                        userCredential.user.uid.slice(0, 3) +
-                        userCredential.user.uid.slice(-3),
-                    photoUrl: ''
-                  })
-                )
+                sendEmailVerification(userCredential.user).then(() => {
+                  dispatch(
+                    login({
+                      email: userCredential.user.email,
+                      uid: userCredential.user.uid,
+                      displayName:
+                        fullname ||
+                        'User-' +
+                          userCredential.user.uid.slice(0, 3) +
+                          userCredential.user.uid.slice(-3),
+                      photoUrl: ''
+                    })
+                  )
+                })
               })
               .catch((error) => {
                 Swal.fire({

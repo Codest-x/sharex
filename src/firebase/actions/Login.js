@@ -23,7 +23,8 @@ const Login = (email, password, dispatch) => {
           email: userCredential.user.email,
           uid: userCredential.user.uid,
           displayName: userCredential.user.displayName,
-          photoUrl: userCredential.user.photoURL
+          photoUrl: userCredential.user.photoURL,
+          isVerified: userCredential.user.emailVerified
         })
       )
     })
