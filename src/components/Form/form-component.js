@@ -36,6 +36,10 @@ export default function Form() {
           loginState.current === 'login' ? { display: 'none' } : { display: '' }
         }
         className="form__content"
+        onKeyDown={(e) => {
+          e.key === 'Enter' &&
+            Register(fullname, email, password, confirmpassword, dispatch)
+        }}
       >
         <div className="text__box" style={{ gap: '0px' }}>
           <h1 className="anim-typewriter" style={{ padding: '0 5px' }}>
@@ -91,6 +95,9 @@ export default function Form() {
             : { display: '' }
         }
         className="form__content"
+        onKeyDown={(e) => {
+          e.key === 'Enter' && Login(email, password, dispatch)
+        }}
       >
         <div className="text__box">
           <h1 className="anim-typewriter">Iniciar</h1>
