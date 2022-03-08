@@ -17,7 +17,7 @@ export default function Button({
       {path ? (
         <Link
           to={path}
-          style={width ? { width: width } : { width: '80px' }}
+          style={width ? { width: width } : { width: '' }}
           className={`button ${type || 'primary'} ${path ? 'link' : ''} ${
             size || 'medium'
           } ${style} `}
@@ -27,7 +27,7 @@ export default function Button({
       ) : (
         <button
           onClick={onClick}
-          style={width ? { width: width } : { width: '80px' }}
+          style={width ? { width: width } : { width: '' }}
           className={`button ${type} ${path ? 'link' : ''} ${
             size || 'medium'
           } ${style} `}
