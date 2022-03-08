@@ -6,16 +6,21 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
-  getAuth
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider
 } from 'firebase/auth'
 import { useDispatch } from 'react-redux'
 import { login } from '../../features/userSlice'
+import { provider } from '../../firebase/firebase'
+import GoogleIcon from '@mui/icons-material/Google'
+import Swal from 'sweetalert2'
 
 export default function Form() {
   const auth = getAuth()
   const [loginState, setLoginState] = useState({
-    current: 'register',
-    title: 'Iniciar Sesion'
+    current: 'login',
+    title: 'Registrarme'
   })
   const [fullname, setFullname] = useState('')
   const [email, setEmail] = useState('')
@@ -36,52 +41,149 @@ export default function Form() {
 
   const Register = (e) => {
     e.preventDefault()
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        updateProfile(auth.currentUser, {
-          displayName: fullname,
-          photoURL: ''
+    if (!password || !confirmpassword) {
+      Swal.fire({
+        position: 'top',
+        icon: 'error',
+        title: 'Los campos de contraseña deben estar llenos',
+        showConfirmButton: false,
+        timer: 2000
+      })
+    } else {
+      if (password !== confirmpassword) {
+        Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: 'Las contraseñas deben coincidir',
+          showConfirmButton: false,
+          timer: 2000
         })
-          .then(() => {
-            dispatch(
-              login({
-                email: userCredential.user.email,
-                uid: userCredential.user.uid,
-                displayName: fullname,
-                photoURL: ''
+      } else {
+        createUserWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            updateProfile(userCredential.user, {
+              displayName:
+                fullname ||
+                'User-' +
+                  userCredential.user.uid.slice(0, 3) +
+                  userCredential.user.uid.slice(-3),
+              photoUrl: ''
+            })
+              .then(() => {
+                dispatch(
+                  login({
+                    email: userCredential.user.email,
+                    uid: userCredential.user.uid,
+                    displayName:
+                      fullname ||
+                      'User-' +
+                        userCredential.user.uid.slice(0, 3) +
+                        userCredential.user.uid.slice(-3),
+                    photoUrl: ''
+                  })
+                )
               })
-            )
+              .catch((error) => {
+                Swal.fire({
+                  position: 'top',
+                  icon: 'error',
+                  title: error.message,
+                  showConfirmButton: false,
+                  timer: 1500
+                })
+              })
           })
           .catch((error) => {
-            console.log(error)
+            const errorCode = error.code
+            let title
+            switch (errorCode) {
+              case 'auth/invalid-email':
+                title = 'Invalid Email'
+                break
+              case 'auth/weak-password':
+                title = 'Minimun password character 6'
+                break
+              case 'auth/email-already-in-use':
+                title = 'Email already in use'
+                break
+              default:
+                title = 'Hubo un error'
+                break
+            }
+            Swal.fire({
+              position: 'top',
+              icon: 'error',
+              title: title,
+              showConfirmButton: false,
+              timer: 2000
+            })
           })
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+      }
+    }
   }
 
   const Login = (e) => {
     e.preventDefault()
-    console.log(email, password)
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         dispatch(
           login({
             email: userCredential.user.email,
             uid: userCredential.user.uid,
-            displayName: fullname,
-            profileUrl: userCredential.user.photoURL
+            displayName: userCredential.user.displayName,
+            photoUrl: userCredential.user.photoURL
           })
         )
       })
       .catch((error) => {
-        console.log(error.message)
+        const errorCode = error.code
+        let title
+        switch (errorCode) {
+          case 'auth/wrong-password':
+            title = 'Contraseña Incorrecta'
+            break
+          case 'auth/invalid-email':
+            title = 'Invalid Email'
+            break
+          default:
+            title = 'Hubo un error'
+            break
+        }
+        Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: title,
+          showConfirmButton: false,
+          timer: 1500
+        })
+      })
+  }
+
+  const GoogleLogin = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        /* const credential = GoogleAuthProvider.credentialFromResult(result) */
+        const user = result.user
+
+        dispatch(
+          login({
+            email: user.email,
+            uid: user.uid,
+            displayName: user.displayName,
+            photoUrl: user.photoURL
+          })
+        )
+      })
+      .catch((error) => {
+        /* const credential = GoogleAuthProvider.credentialFromError(error) */
+        console.log(error)
+        // ...
       })
   }
 
   return (
     <div className="form__container">
+      {/* Register Form */}
       <div
         style={
           loginState.current === 'login' ? { display: 'none' } : { display: '' }
@@ -108,7 +210,7 @@ export default function Form() {
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
-          type="text"
+          type="password"
           name="password"
           placeholder="Contraseña"
           required
@@ -116,7 +218,7 @@ export default function Form() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <input
-          type="text"
+          type="password"
           placeholder="Confirmar Contraseña"
           required
           value={confirmpassword}
@@ -126,6 +228,7 @@ export default function Form() {
           Registrarme
         </Button>
       </div>
+      {/* Login Form */}
       <div
         style={
           loginState.current === 'register'
@@ -146,16 +249,22 @@ export default function Form() {
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
-          type="text"
+          type="password"
           name="pwd"
           placeholder="Contraseña"
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button type="primary" size="medium" width="150px" onClick={Login}>
-          Iniciar Sesion
-        </Button>
+        <div className="login__buttons">
+          <Button type="primary" size="medium" width="150px" onClick={Login}>
+            Iniciar Sesion
+          </Button>
+          <span>
+            Usa Google
+            <GoogleIcon onClick={GoogleLogin} />
+          </span>
+        </div>
       </div>
       <div className="form__changeform">
         <span>
