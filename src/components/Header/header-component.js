@@ -36,7 +36,6 @@ export default function Header() {
       </div>
       <div className="header__right">
         <HeaderOption title="Inicio" path="/" Icon={HomeIcon} />
-        <HeaderOption title="Explorar" path="/explore" Icon={GroupIcon} />
         <HeaderOption title="Me" path="/profile" avatar />
         <Button type="primary" onClick={LogoutApp} size="medium">
           Logout
