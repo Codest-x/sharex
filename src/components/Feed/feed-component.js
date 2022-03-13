@@ -29,12 +29,18 @@ export default function Feed() {
   const sendPost = (e) => {
     e.preventDefault()
     const addData = async () => {
+      if (!input) return
       try {
         await addDoc(collection(db, 'posts'), {
           name: user.user.displayName,
           message: input,
           description: user.user.email,
           photoUrl: user.user.photoUrl || '',
+          reactions: {
+            comments: 0,
+            shares: 0,
+            usersLikes: []
+          },
           timestamp: serverTimestamp()
         })
         setInput('')
@@ -60,17 +66,22 @@ export default function Feed() {
       }
     )
   }, [])
+
   return (
     <div className="feed">
       <div className="feed__inputContainer">
         <div className="feed__input">
-          <CreateIcon />
+          {/* <CreateIcon /> */}
           <form>
-            <input
+            <textarea
               type="text"
               className=""
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={({ target }) => {
+                setInput(target.value)
+                target.style.height = '20px'
+                target.style.height = target.scrollHeight + 'px'
+              }}
             />
             <button onClick={sendPost} type="submit" className="">
               Send
@@ -78,7 +89,12 @@ export default function Feed() {
           </form>
         </div>
         <div className="feed__inputOptions">
-          <InputOption onClick={sendPost} title="Enviar" Icon={SendIcon} color="red" />
+          <InputOption
+            onClick={sendPost}
+            title="Enviar"
+            Icon={SendIcon}
+            color="red"
+          />
           <InputOption title="Foto" Icon={ImageIcon} color="#0074FF" />
           <InputOption title="Video" Icon={VideoLibraryIcon} color="orange" />
           <InputOption title="Articulo" Icon={ArticleIcon} color="green" />
@@ -86,15 +102,22 @@ export default function Feed() {
         </div>
       </div>
       <FlipMove>
-        {posts.map(({ id, data: { name, description, message, photoUrl } }) => (
-          <Post
-            key={id}
-            name={name}
-            description={description}
-            photoUrl={photoUrl}
-            message={message}
-          />
-        ))}
+        {posts.map(
+          ({
+            id,
+            data: { name, description, message, photoUrl, reactions }
+          }) => (
+            <Post
+              key={id}
+              postId={id}
+              name={name}
+              description={description}
+              photoUrl={photoUrl}
+              message={message}
+              reactions={reactions}
+            />
+          )
+        )}
       </FlipMove>
     </div>
   )
