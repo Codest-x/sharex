@@ -36,11 +36,9 @@ export default function Feed() {
           message: input,
           description: user.user.email,
           photoUrl: user.user.photoUrl || '',
-          reactions: {
-            comments: 0,
-            shares: 0,
-            usersLikes: []
-          },
+          usersLikes: [],
+          usersShares: 0,
+          comments: [],
           timestamp: serverTimestamp()
         })
         setInput('')
@@ -105,7 +103,15 @@ export default function Feed() {
         {posts.map(
           ({
             id,
-            data: { name, description, message, photoUrl, reactions }
+            data: {
+              name,
+              description,
+              message,
+              photoUrl,
+              usersLikes,
+              usersShares,
+              comments
+            }
           }) => (
             <Post
               key={id}
@@ -114,7 +120,9 @@ export default function Feed() {
               description={description}
               photoUrl={photoUrl}
               message={message}
-              reactions={reactions}
+              usersLikes={usersLikes}
+              usersShares={usersShares}
+              comments={comments}
             />
           )
         )}
