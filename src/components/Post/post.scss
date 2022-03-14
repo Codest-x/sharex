@@ -40,10 +40,58 @@
       display: flex;
       gap: 10px;
     }
+
+    .postReactions__comments {
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 
   .post__buttons {
     display: flex;
     justify-content: space-evenly;
+  }
+
+  
+}
+
+.postInput__comment {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  padding: 10px 0;
+
+  div {
+    &:nth-child(2) {
+      border: 1px solid lightgray;
+      margin-left: 8px;
+      border-radius: 30px;
+      display: flex;
+      width: 85%;
+      padding: 10px;
+      color: gray;
+      padding-left: 15px;
+
+      form {
+        width: 100%;
+
+        input {
+          width: 97%;
+          border: none;
+          background: none;
+          outline: none;
+        }
+
+        button {
+          display: none;
+        }
+      }
+    }
   }
 }
