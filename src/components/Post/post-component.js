@@ -34,6 +34,13 @@ const Post = forwardRef(
     const [commentInput, setCommentInput] = useState('')
     const [showComments, setShowComments] = useState(false)
 
+    const images = [
+      'https://tecnovortex.com/wp-content/uploads/2019/04/wallpaper-engine.jpg'
+    ]
+
+    const columns = Math.round(images.length / 2)
+    const rows = Math.floor(images.length / 2)
+
     return (
       <>
         <div ref={ref} className="post">
@@ -48,6 +55,17 @@ const Post = forwardRef(
           </div>
           <div className="post__body">
             <p>{message}</p>
+          </div>
+          <div
+            className="post__images"
+            style={{
+              gridTemplateColumns: `repeat(${columns},1fr)`,
+              gridTemplateRows: `repeat(${rows},1fr)`
+            }}
+          >
+            {images.map((image, i) => (
+              <img src={image} key={i} />
+            ))}
           </div>
           <div className="post__reactions">
             <span>{`${usersLikes.length} Likes`}</span>
