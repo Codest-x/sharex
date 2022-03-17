@@ -15,8 +15,9 @@ export default function Sidebar() {
   return (
     <div className="sidebar">
       <div className="sidebar__top">
-        <img
-          src="https://tecnovortex.com/wp-content/uploads/2019/04/wallpaper-engine.jpg"
+        <div
+          /* src="https://tecnovortex.com/wp-content/uploads/2019/04/wallpaper-engine.jpg" */
+          className="sidebar__banner"
           alt="banner-profile"
         />
         <Avatar src={user.photoUrl} className="sidebar__avatar" alt={`${user?.displayName}-Avatar`}>
