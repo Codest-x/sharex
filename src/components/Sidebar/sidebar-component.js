@@ -19,7 +19,7 @@ export default function Sidebar() {
           src="https://tecnovortex.com/wp-content/uploads/2019/04/wallpaper-engine.jpg"
           alt="banner-profile"
         />
-        <Avatar src={user.photoUrl} className="sidebar__avatar">
+        <Avatar src={user.photoUrl} className="sidebar__avatar" alt={`${user?.displayName}-Avatar`}>
           {user?.displayName[0]}
         </Avatar>
         <h2>{user.displayName}</h2>

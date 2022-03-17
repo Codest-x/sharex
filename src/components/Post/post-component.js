@@ -32,12 +32,15 @@ const Post = forwardRef(
     const { user } = useSelector(selectUser)
     const [showCommentInput, setShowCommentInput] = useState(false)
     const [commentInput, setCommentInput] = useState('')
+    const [showComments, setShowComments] = useState(false)
 
     return (
       <>
         <div ref={ref} className="post">
           <div className="post__header">
-            <Avatar src={photoUrl}>{name[0]}</Avatar>
+            <Avatar alt={`${user?.displayName}-Avatar`} src={photoUrl}>
+              {name[0]}
+            </Avatar>
             <div className="post__info">
               <h2>{name}</h2>
               <p>{description}</p>
@@ -49,7 +52,10 @@ const Post = forwardRef(
           <div className="post__reactions">
             <span>{`${usersLikes.length} Likes`}</span>
             <div>
-              <span className="postReactions__comments">{`${comments.length} Comentarios`}</span>
+              <span
+                onClick={() => setShowComments(!showComments)}
+                className="postReactions__comments"
+              >{`${comments.length} Comentarios`}</span>
               <span>{`${usersShares} Compartidas`}</span>
             </div>
           </div>
@@ -78,13 +84,35 @@ const Post = forwardRef(
             <InputOption Icon={ShareOutlinedIcon} title="Compartir" />
             {/* <InputOption Icon={SendOutlinedIcon} title="Enviar" /> */}
           </div>
+          <div
+            className="post__comments"
+            style={showComments ? { display: 'flex' } : { display: 'none' }}
+          >
+            {comments.map(({ displayName, comment, photoUrl }) => (
+              <div key={`${postId}-comment`} className="post__comment">
+                <Avatar
+                  sx={{ width: 30, height: 30 }}
+                  alt={`${user?.displayName}-Avatar`}
+                  src={photoUrl}
+                >
+                  {displayName[0]}
+                </Avatar>
+                <div className="postComment__body">
+                  <span>{displayName}</span>
+                  <p>{comment}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
         <Fade top when={showCommentInput}>
           <div
             className="postInput__comment"
             style={showCommentInput ? { display: 'flex' } : { display: 'none' }}
           >
-            <Avatar src={user.photoUrl}>{user?.displayName[0]}</Avatar>
+            <Avatar src={user.photoUrl} alt={`${user?.displayName}-Avatar`}>
+              {user?.displayName[0]}
+            </Avatar>
             <div>
               <form>
                 <input
