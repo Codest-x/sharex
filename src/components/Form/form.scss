@@ -113,5 +113,20 @@
         width: 300px;
       }
     }
+
+    .form__content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 30%;
+  
+      .login__buttons {
+  
+        span {
+          display: none;
+
+        }
+      }
+    }
   }
 }

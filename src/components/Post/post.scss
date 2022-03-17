@@ -26,6 +26,20 @@
     overflow-wrap: anywhere;
   }
 
+  .post__images {
+    max-width: 660px;
+    margin: 0 auto;
+    display: grid;
+    place-content: center;
+    margin-top: 10px;
+    gap: 10px;
+
+    img {
+      width: 100%;
+      border-radius: 10px;
+    }
+  }
+
   .post__reactions {
     display: flex;
     justify-content: flex-end;
@@ -118,6 +132,18 @@
 
         button {
           display: none;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .post {
+    .post__comments {
+      .post__comment {
+        .postComment__body {
+          max-width: 75%;
         }
       }
     }
