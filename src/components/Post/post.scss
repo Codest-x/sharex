@@ -34,6 +34,18 @@
     margin-top: 10px;
     gap: 10px;
 
+    &.cols__2 {
+      grid-template-columns: repeat(2,1fr);
+    }
+
+    &.cols__3 {
+      img {
+        &:nth-child(1) {
+          grid-area: 1 / 1 / 1 / 3;
+        }
+      }
+    }
+
     img {
       width: 100%;
       border-radius: 10px;

@@ -25,7 +25,8 @@ const Post = forwardRef(
       photoUrl,
       usersLikes,
       usersShares,
-      comments
+      comments,
+      images
     },
     ref
   ) => {
@@ -34,8 +35,10 @@ const Post = forwardRef(
     const [commentInput, setCommentInput] = useState('')
     const [showComments, setShowComments] = useState(false)
 
-    /* const columns = Math.round(images.length / 2)
-    const rows = Math.floor(images.length / 2) */
+    /* const columns = Math.round(
+      Math.floor(images?.length / 2) + Math.floor(images.length / 2)
+    )
+    const rows = Math.floor(images?.length / 2) */
 
     return (
       <>
@@ -52,19 +55,20 @@ const Post = forwardRef(
           <div className="post__body">
             <p>{message}</p>
           </div>
-          {/* {images ? (
+          {images ? (
             <div
-              className="post__images"
+              className={`post__images ${
+                images.length === 3 ? 'cols__3' : ''
+              } ${images.length === 2 || images.length === 4 ? 'cols__2' : ''}`}
               style={{
-                gridTemplateColumns: `repeat(${columns},1fr)`,
-                gridTemplateRows: `repeat(${rows},1fr)`
+                gridTemplateRows: `repeat(${Math.floor(images.length / 2)},1fr)`
               }}
             >
               {images.map((image, i) => (
                 <img src={image} key={i} />
               ))}
             </div>
-          ) : null} */}
+          ) : null}
 
           <div className="post__reactions">
             <span>{`${usersLikes.length} Likes`}</span>
@@ -166,5 +170,6 @@ Post.propTypes = {
   photoUrl: PropTypes.string,
   usersLikes: PropTypes.array,
   usersShares: PropTypes.number,
-  comments: PropTypes.array
+  comments: PropTypes.array,
+  images: PropTypes.array
 }
