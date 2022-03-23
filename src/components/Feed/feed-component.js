@@ -110,7 +110,8 @@ export default function Feed() {
               photoUrl,
               usersLikes,
               usersShares,
-              comments
+              comments,
+              images
             }
           }) => (
             <Post
@@ -123,6 +124,7 @@ export default function Feed() {
               usersLikes={usersLikes}
               usersShares={usersShares}
               comments={comments}
+              images={images}
             />
           )
         )}
