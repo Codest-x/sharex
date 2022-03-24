@@ -1,4 +1,4 @@
-import { doc, updateDoc } from 'firebase/firestore'
+import { doc, updateDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../../../firebase/firebase'
 
 const addComment = async(e, user, commentInput, comments, postId) => {
@@ -10,7 +10,8 @@ const addComment = async(e, user, commentInput, comments, postId) => {
       {
         displayName: user.displayName,
         photoUrl: user.photoUrl,
-        comment: commentInput
+        comment: commentInput,
+        publishedAt: new Date(Date.now())
       }
     ]
   })
