@@ -11,44 +11,17 @@ import Post from '../Post/post-component'
 import FlipMove from 'react-flip-move'
 import { db } from '../../firebase/firebase'
 import { useSelector } from 'react-redux'
-import {
-  collection,
-  onSnapshot,
-  addDoc,
-  serverTimestamp,
-  orderBy,
-  query
-} from 'firebase/firestore'
+import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { selectUser } from '../../features/userSlice'
+import SendPost from './actions/SendPost'
+import { ImageGrid, ImageItem } from '../ImageGrid/image-grid'
 
 export default function Feed() {
   const [posts, setPosts] = useState([])
   const [input, setInput] = useState('')
+  const [images, setImages] = useState([])
   const user = useSelector(selectUser)
-
-  const sendPost = (e) => {
-    e.preventDefault()
-    const addData = async () => {
-      if (!input) return
-      try {
-        await addDoc(collection(db, 'posts'), {
-          name: user.user.displayName,
-          message: input,
-          description: user.user.email,
-          photoUrl: user.user.photoUrl || '',
-          usersLikes: [],
-          usersShares: 0,
-          comments: [],
-          timestamp: serverTimestamp()
-        })
-        setInput('')
-      } catch (e) {
-        console.error('Error adding document: ', e)
-      }
-    }
-
-    addData()
-  }
 
   useEffect(() => {
     onSnapshot(
@@ -64,6 +37,32 @@ export default function Feed() {
       }
     )
   }, [])
+
+  const UploadImage = (files) => {
+    const storage = getStorage()
+
+    Array.from(files).forEach(async (file) => {
+      const imageRef = ref(storage, `/Images/${file.name}`)
+
+      const metadata = {
+        contentType: file.type
+      }
+
+      await uploadBytes(imageRef, file, metadata).then(
+        ({ ref: { name } }) => {
+          getDownloadURL(imageRef).then((downloadURL) => {
+            setImages((prevState) => [
+              ...prevState,
+              { title: name, imageURL: downloadURL }
+            ])
+          })
+        },
+        (err) => {
+          console.log(err)
+        }
+      )
+    })
+  }
 
   return (
     <div className="feed">
@@ -81,19 +80,65 @@ export default function Feed() {
                 target.style.height = target.scrollHeight + 'px'
               }}
             />
-            <button onClick={sendPost} type="submit" className="">
+            <button
+              onClick={() => {
+                SendPost(input, user)
+                setInput('')
+              }}
+              type="submit"
+              className=""
+            >
               Send
             </button>
           </form>
         </div>
+        {images ? (
+          <ImageGrid images={images}>
+            {images.map(({ imageURL, title }) => (
+              <ImageItem
+                key={imageURL}
+                title={title}
+                imageURL={imageURL}
+                inputOption={true}
+                onClick={() =>
+                  setImages(images.filter((item) => item.title !== title))
+                }
+              />
+            ))}
+          </ImageGrid>
+        ) : null}
         <div className="feed__inputOptions">
           <InputOption
-            onClick={sendPost}
+            onClick={(e) => {
+              e.preventDefault()
+              SendPost(input, user, images)
+              setInput('')
+              setImages([])
+            }}
             title="Enviar"
             Icon={SendIcon}
             color="red"
           />
-          <InputOption title="Foto" Icon={ImageIcon} color="#0074FF" />
+          <div>
+            <input
+              type="file"
+              accept="image/png, image/gif, image/jpeg, image/webp"
+              id="imgupload"
+              style={{ display: 'none' }}
+              multiple
+              onChange={({ target: { files } }) => {
+                UploadImage(files)
+              }}
+            />
+            <InputOption
+              title="Foto"
+              Icon={ImageIcon}
+              color="#0074FF"
+              onClick={() => {
+                document.getElementById('imgupload').click()
+              }}
+            />
+          </div>
           <InputOption title="Video" Icon={VideoLibraryIcon} color="orange" />
           <InputOption title="Articulo" Icon={ArticleIcon} color="green" />
           {/* <InputOption title="Evento" Icon={EventIcon} color="green" /> */}
