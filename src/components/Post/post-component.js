@@ -5,6 +5,7 @@ import './post.scss'
 import PropTypes from 'prop-types'
 import Avatar from '@mui/material/Avatar'
 import InputOption from '../InputOption/input-option'
+import { ImageGrid, ImageItem } from '../ImageGrid/image-grid'
 import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined'
 import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 import InsertCommentOutlinedIcon from '@mui/icons-material/InsertCommentOutlined'
@@ -35,11 +36,6 @@ const Post = forwardRef(
     const [commentInput, setCommentInput] = useState('')
     const [showComments, setShowComments] = useState(false)
 
-    /* const columns = Math.round(
-      Math.floor(images?.length / 2) + Math.floor(images.length / 2)
-    )
-    const rows = Math.floor(images?.length / 2) */
-
     return (
       <>
         <div ref={ref} className="post">
@@ -56,18 +52,15 @@ const Post = forwardRef(
             <p>{message}</p>
           </div>
           {images ? (
-            <div
-              className={`post__images ${
-                images.length === 3 ? 'cols__3' : ''
-              } ${images.length === 2 || images.length === 4 ? 'cols__2' : ''}`}
-              style={{
-                gridTemplateRows: `repeat(${Math.floor(images.length / 2)},1fr)`
-              }}
-            >
-              {images.map((image, i) => (
-                <img src={image} key={i} />
+            <ImageGrid images={images}>
+              {images.map((image) => (
+                <ImageItem
+                  key={image.imageURL}
+                  title={image.title}
+                  imageURL={image.imageURL}
+                />
               ))}
-            </div>
+            </ImageGrid>
           ) : null}
 
           <div className="post__reactions">
@@ -109,8 +102,8 @@ const Post = forwardRef(
             className="post__comments"
             style={showComments ? { display: 'flex' } : { display: 'none' }}
           >
-            {comments.map(({ displayName, comment, photoUrl }) => (
-              <div key={`${postId}-comment`} className="post__comment">
+            {comments.map(({ displayName, comment, photoUrl, publishedAt }) => (
+              <div key={`${publishedAt}-comment`} className="post__comment">
                 <Avatar
                   sx={{ width: 30, height: 30 }}
                   alt={`${user?.displayName}-Avatar`}
