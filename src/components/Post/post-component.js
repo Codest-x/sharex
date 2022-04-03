@@ -67,7 +67,9 @@ const Post = forwardRef(
             <span>{`${usersLikes.length} Likes`}</span>
             <div>
               <span
-                onClick={() => setShowComments(!showComments)}
+                onClick={() => {
+                  comments.length > 0 && setShowComments(!showComments)
+                }}
                 className="postReactions__comments"
               >{`${comments.length} Comentarios`}</span>
               <span>{`${usersShares} Compartidas`}</span>
@@ -95,7 +97,7 @@ const Post = forwardRef(
               }}
               title="Comentar"
             />
-            <InputOption Icon={ShareOutlinedIcon} title="Compartir" />
+            {/* <InputOption Icon={ShareOutlinedIcon} title="Compartir" /> */}
             {/* <InputOption Icon={SendOutlinedIcon} title="Enviar" /> */}
           </div>
           <div
@@ -138,6 +140,7 @@ const Post = forwardRef(
                   onClick={(e) => {
                     addComment(e, user, commentInput, comments, postId)
                     setCommentInput('')
+                    setShowComments(!showComments)
                   }}
                   type="submit"
                   className=""
