@@ -41,7 +41,7 @@ export default function Widgets() {
   return (
     <div className="widgets">
       <div className="widgets__header">
-        <h2>ShareX Info</h2>
+        <h2>ShareX Creator News</h2>
         <InfoIcon />
       </div>
       <NewsArticle
