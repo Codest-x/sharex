@@ -27,12 +27,12 @@ export default function Sidebar() {
         <h4>{user.email}</h4>
       </div>
       <div className="sidebar__stats">
-        <div className="sidebar__stat">
+        {/* <div className="sidebar__stat">
           <p>Quien te ha visto</p>
           <p className="sidebar__statNumber">2,453</p>
-        </div>
+        </div> */}
         <div className="sidebar__stat">
-          <p>Vistas de publicaciones</p>
+          <p>Likes de publicaciones</p>
           <p className="sidebar__statNumber">253</p>
         </div>
       </div>
