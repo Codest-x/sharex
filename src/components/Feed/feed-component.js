@@ -131,7 +131,7 @@ export default function Feed() {
               }}
             />
             <InputOption
-              title="Foto"
+              title="Imagen"
               Icon={ImageIcon}
               color="#0074FF"
               onClick={() => {
@@ -139,8 +139,8 @@ export default function Feed() {
               }}
             />
           </div>
-          <InputOption title="Video" Icon={VideoLibraryIcon} color="orange" />
-          <InputOption title="Articulo" Icon={ArticleIcon} color="green" />
+          {/* <InputOption title="Video" Icon={VideoLibraryIcon} color="orange" />
+          <InputOption title="Articulo" Icon={ArticleIcon} color="green" /> */}
           {/* <InputOption title="Evento" Icon={EventIcon} color="green" /> */}
         </div>
       </div>
