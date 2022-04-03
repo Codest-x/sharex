@@ -39,10 +39,9 @@ export default function Sidebar() {
 
       <div className="sidebar__bottom">
         <p>Reciente</p>
-        {recentItem('reactjs')}
-        {recentItem('software')}
-        {recentItem('programming')}
-        {recentItem('javascript')}
+        {recentItem('Programming')}
+        {recentItem('Funny')}
+        {recentItem('Moments')}
       </div>
     </div>
   )
